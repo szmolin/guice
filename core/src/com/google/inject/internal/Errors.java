@@ -28,6 +28,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 import com.google.inject.ConfigurationException;
 import com.google.inject.CreationException;
+import com.google.inject.FailFastException;
 import com.google.inject.Guice;
 import com.google.inject.Key;
 import com.google.inject.MembersInjector;
@@ -107,10 +108,17 @@ public final class Errors implements Serializable {
    */
   private List<Message> errors; // lazy, use getErrorsForAdd()
 
+  private boolean failFast = true;
+
   public Errors() {
     this.root = this;
     this.parent = null;
     this.source = SourceProvider.UNKNOWN_SOURCE;
+  }
+
+  public Errors(boolean failFast) {
+    this();
+    this.failFast = failFast;
   }
 
   public Errors(Object source) {
@@ -550,6 +558,9 @@ public final class Errors implements Serializable {
       root.errors = Lists.newArrayList();
     }
     root.errors.add(message);
+    if (failFast) {
+      throw new FailFastException(getMessages());
+    }
     return this;
   }
 

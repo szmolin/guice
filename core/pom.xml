@@ -10,6 +10,7 @@
   </parent>
 
   <artifactId>guice</artifactId>
+  <version>4.1.0.failfast.1</version>
 
   <name>Google Guice - Core Library</name>
 
@@ -331,4 +332,6 @@
       </build>
     </profile>
   </profiles>
+
+
 </project>
